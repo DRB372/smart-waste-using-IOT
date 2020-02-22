@@ -17,8 +17,10 @@ db.connect(err => {
 });
 
 const EmployeeService = require('./services/EmployeeService');
+const AvatarService = require('./services/AvatarService');
 
 const employeeService = new EmployeeService(db);
+const avatars = new AvatarService(path.join(__dirname, './data/avatars'));
 const routes = require('./routes');
 
 const app = express();
@@ -44,7 +46,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes({ employeeService }));
+app.use('/', routes({ employeeService, avatars }));
 
 app.listen(port, () => {
   console.log(`Express server listening port on ${port}!`);

@@ -1,10 +1,11 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
+const middlewares = require('./middlewares');
 
 const router = express.Router();
 
 module.exports = params => {
-  const { employeeService } = params;
+  const { employeeService, avatars } = params;
 
   router.get('/', (req, res) => {
     employeeService.getEmployees((err, result) => {
@@ -49,6 +50,8 @@ module.exports = params => {
 
   router.post(
     '/new',
+    middlewares.upload.single('avatar'),
+    middlewares.handleAvatar(avatars),
     [
       check('full_name')
         .trim()
@@ -105,7 +108,7 @@ module.exports = params => {
         .escape()
         .withMessage('A valid password is required'),
     ],
-    (req, res) => {
+    async (req, res, next) => {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -113,16 +116,33 @@ module.exports = params => {
         return res.redirect('/employee/new');
       }
 
-      employeeService.addEmployee(req.body, (err, result) => {
-        if (err) {
-          throw err;
-        } else {
-          req.session.employee = { employeeId: result.insertId };
-          return res.redirect('/employee/new');
+      try {
+        if (req.file && req.file.storedFilename) {
+          req.body.avatar = req.file.storedFilename;
         }
-      });
+  
+        employeeService.addEmployee(req.body, (err, result) => {
+          if (err) {
+            throw err;
+          } else {
+            req.session.employee = { employeeId: result.insertId };
+            return res.redirect('/employee/new');
+          }
+        });
+      } catch (error) {
+        if (req.file && req.file.storedFilename) {
+          await avatars.delete(req.file.storedFilename);
+        }
+
+        return next(error);
+      }
     }
   );
+
+  router.get('/avatar/:filename', (req, res) => {
+    res.type('png');
+    return res.sendFile(avatars.filepath(req.params.filename));
+  });
 
   return router;
 };

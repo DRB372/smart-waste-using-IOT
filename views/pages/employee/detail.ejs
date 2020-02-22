@@ -81,7 +81,7 @@
                     <li></li>
                     <li class="text-center">
                       <img
-                        src="/img/placeholder-avatar.png"
+                        src="<%= employee.avatar ? `/employee/avatar/${employee.avatar}` : '/img/placeholder-avatar.png' %>"
                         alt="..."
                         class="img-circle profile_img"
                       />

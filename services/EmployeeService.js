@@ -42,7 +42,7 @@ class EmployeeService {
         throw error;
       } else {
         const employeeData = {
-          avatar: null,
+          avatar: data.avatar,
           employee_type: data.employee_type,
           shift: data.shift,
           account_no: data.account_no,

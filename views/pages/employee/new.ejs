@@ -24,15 +24,18 @@
             <% }) %>
           </div>
         </div>
-        <% } %> <% if(successMessage){ %>
+        <% } else if(employeeId){ %>
         <div class="row justify-content-md-center">
           <div class="alert alert-success" role="alert">
             <h5>🙌 Success</h5>
-            <p><%= successMessage %></p>
+            <p>
+              New employee added successfully.
+              <a href="/employee/profile/<%= employeeId %>">View details</a>
+            </p>
           </div>
         </div>
         <% } %>
-        <form action="/employee/new" method="POST" novalidate>
+        <form action="/employee/new" method="POST" novalidate enctype="multipart/form-data">
           <div class="field item form-group">
             <label class="col-form-label col-md-3 col-sm-3  label-align"
               >Name<span class="required"> *</span></label
@@ -157,7 +160,7 @@
 
           <div class="field item form-group">
             <label class="col-form-label col-md-3 col-sm-3  label-align"
-              >Shift<span class="required">*</span></label
+              >Working Shift<span class="required"> *</span></label
             >
             <div class="col-md-6 col-sm-6">
               <select class="form-control" name="shift">
@@ -178,6 +181,21 @@
                 type="text"
                 class="number"
                 name="account_no"
+                required="required"
+              />
+            </div>
+          </div>
+
+          <div class="field item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align"
+              >Avatar<span class="required"> *</span>
+            </label>
+            <div class="col-md-6 col-sm-6">
+              <input
+                class="form-control"
+                style="height: auto;"
+                type="file"
+                name="avatar"
                 required="required"
               />
             </div>
