@@ -4,7 +4,15 @@ class EmployeeService {
   }
 
   getEmployees(callback) {
-    this.db.query('SELECT * FROM employee', callback);
+    this.db.query(
+      `SELECT
+      E.employee_id, P.full_name, P.gender, P.cnic, P.contact, P.email, E.employee_type, E.shift
+      FROM
+      person AS P
+      JOIN employee AS E ON E.person_id = P.person_id;
+    `,
+      callback
+    );
   }
 
   addEmployee(data, callback) {

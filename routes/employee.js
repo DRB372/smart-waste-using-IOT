@@ -11,8 +11,11 @@ module.exports = params => {
       if (err) {
         throw err;
       } else {
-        console.log(result);
-        return res.render('layout', { title: 'Employees', template: 'employee/index' });
+        return res.render('layout', {
+          title: 'Employees',
+          template: 'employee/index',
+          employees: result,
+        });
       }
     });
   });
@@ -95,7 +98,7 @@ module.exports = params => {
         req.session.employee = { errors: errors.array() };
         return res.redirect('/employee/new');
       }
-      
+
       employeeService.addEmployee(req.body, (err, result) => {
         if (err) {
           throw err;
