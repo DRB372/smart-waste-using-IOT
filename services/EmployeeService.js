@@ -15,6 +15,17 @@ class EmployeeService {
     );
   }
 
+  getEmployeeById(uid, callback) {
+    const sql = `SELECT E.employee_id, P.full_name, P.gender, P.cnic, P.contact,
+    P.email, P.dob, P.home_address,
+    E.avatar, E.employee_type, E.shift, E.account_no, E.created_at
+    FROM person AS P
+    JOIN employee AS E ON E.person_id = P.person_id
+    WHERE E.employee_id = ?`;
+
+    this.db.query(sql, uid, callback);
+  }
+
   addEmployee(data, callback) {
     const personData = {
       full_name: data.full_name,
@@ -36,6 +47,7 @@ class EmployeeService {
           shift: data.shift,
           account_no: data.account_no,
           passwrd: data.passwrd,
+          created_at: new Date(),
           person_id: result.insertId,
         };
 

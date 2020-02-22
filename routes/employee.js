@@ -20,16 +20,30 @@ module.exports = params => {
     });
   });
 
+  router.get('/profile/:employeeId', (req, res) => {
+    employeeService.getEmployeeById(req.params.employeeId, (err, result) => {
+      if (err) {
+        throw err;
+      } else {
+        return res.render('layout', {
+          title: result[0] ? result[0].full_name : 'N/A',
+          template: 'employee/detail',
+          employee: result[0],
+        });
+      }
+    });
+  });
+
   router.get('/new', (req, res) => {
     const errors = req.session.employee ? req.session.employee.errors : false;
-    const successMessage = req.session.employee ? req.session.employee.message : false;
+    const employeeId = req.session.employee ? req.session.employee.employeeId : false;
     req.session.employee = {};
 
     res.render('layout', {
       title: 'Add Employee',
       template: 'employee/new',
       errors,
-      successMessage,
+      employeeId,
     });
   });
 
@@ -103,8 +117,7 @@ module.exports = params => {
         if (err) {
           throw err;
         } else {
-          console.log(result.resultId);
-          req.session.employee = { message: 'New employee added successfully.' };
+          req.session.employee = { employeeId: result.insertId };
           return res.redirect('/employee/new');
         }
       });
