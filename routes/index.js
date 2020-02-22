@@ -1,10 +1,15 @@
 const express = require('express');
 
+const employeeRoute = require('./employee');
+
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', (req, res) => {
-  res.render('index', { title: 'Express' });
-});
+module.exports = params => {
+  router.get('/', (req, res) => {
+    res.render('layout', { title: 'Dashboard', template: 'index' });
+  });
+  
+  router.use('/employee', employeeRoute(params));
 
-module.exports = router;
+  return router;
+};
