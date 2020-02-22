@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %> | Smart Waste Management</title>
+    <%- include('./partials/styles') %>
+  </head>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title">
+                <i class="fa fa-paw"></i> <span>S W C</span></a
+              >
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="/img/DRB.jpg" alt="..." class="img-circle profile_img" />
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>Great DRB</h2>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <br />
+
+            <%- include('./partials/sidebar') %>
+          </div>
+        </div>
+
+        <%- include('./partials/top-nav') %>
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3><%= title %></h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." />
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <%- include(`../pages/${template}`) %>
+          </div>
+        </div>
+        <!-- /page content -->
+        <%- include('./partials/footer') %>
+      </div>
+    </div>
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
