@@ -3,6 +3,7 @@ const path = require('path');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const createError = require('http-errors');
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -47,6 +48,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes({ employeeService, avatars }));
+
+app.use((req, res, next) => {
+  return next(createError(404, 'Sorry but we couldn\'t find this page'));
+});
+
+app.use((err, req, res, next) => {
+  res.locals.message = err.message;
+  const status = err.status || 500;
+  res.locals.status = status;
+  res.status(status);
+  res.render('error');
+});
 
 app.listen(port, () => {
   console.log(`Express server listening port on ${port}!`);

@@ -54,11 +54,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% if(employees === undefined && employees.length == 0) {%>
-                  <tr>
-                    No record found
-                  </tr>
-                  <% } else { employees.forEach((employee, index) => { %>
+                  <% if(employees) {employees.forEach((employee, index) => { %>
                   <tr>
                     <td><%= index + 1 %></td>
                     <td><%= employee.employee_id %></td>
@@ -71,7 +67,9 @@
                     <td><%= toProperCase(employee.shift) %></td>
                     <td><a href="/employee/profile/<%= employee.employee_id %>">View</a></td>
                   </tr>
-                  <% })} %>
+                  <% });} else { %>
+                  <tr>No record found</tr>
+                  <% } %>
                 </tbody>
               </table>
             </div>
@@ -93,7 +91,7 @@
         {
           targets: [-1],
           searchable: false,
-          orderable: false
+          orderable: false,
         },
       ],
     });

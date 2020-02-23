@@ -3,19 +3,25 @@ class EmployeeService {
     this.db = db;
   }
 
-  getEmployees(callback) {
-    this.db.query(
-      `SELECT
+  async getEmployees() {
+    const sql = `SELECT
       E.employee_id, P.full_name, P.gender, P.cnic, P.contact, P.email, E.employee_type, E.shift
-      FROM
-      person AS P
+    FROM person AS P
       JOIN employee AS E ON E.person_id = P.person_id;
-    `,
-      callback
-    );
+    `;
+
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => resp);
   }
 
-  getEmployeeById(uid, callback) {
+  async getEmployeeById(uid) {
     const sql = `SELECT E.employee_id, P.full_name, P.gender, P.cnic, P.contact,
     P.email, P.dob, P.home_address,
     E.avatar, E.employee_type, E.shift, E.account_no, E.created_at
@@ -23,10 +29,20 @@ class EmployeeService {
     JOIN employee AS E ON E.person_id = P.person_id
     WHERE E.employee_id = ?`;
 
-    this.db.query(sql, uid, callback);
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, uid, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => {
+      return resp.length === 0 ? null : resp[0];
+    });
   }
 
-  addEmployee(data, callback) {
+  async addEmployee(data) {
     const personData = {
       full_name: data.full_name,
       cnic: data.cnic,
@@ -37,22 +53,35 @@ class EmployeeService {
       dob: data.dob,
     };
 
-    this.db.query('INSERT INTO person SET ?', personData, (error, result) => {
-      if (error) {
-        throw error;
-      } else {
-        const employeeData = {
-          avatar: data.avatar,
-          employee_type: data.employee_type,
-          shift: data.shift,
-          account_no: data.account_no,
-          passwrd: data.passwrd,
-          created_at: new Date(),
-          person_id: result.insertId,
-        };
+    return new Promise((resolve, reject) => {
+      this.db.query('INSERT INTO person SET ?', personData, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(async resp => {
+      const employeeData = {
+        avatar: data.avatar,
+        employee_type: data.employee_type,
+        shift: data.shift,
+        account_no: data.account_no,
+        passwrd: data.passwrd,
+        created_at: new Date(),
+        person_id: resp.insertId,
+      };
 
-        this.db.query('INSERT INTO employee SET ?', employeeData, callback);
-      }
+      return new Promise((resolve, reject) => {
+        this.db.query('INSERT INTO employee SET ?', employeeData, (err, result) => {
+          if (!err) {
+            resolve(result);
+          }
+          else {
+            reject(err);
+          }
+        });
+      }).then(respN => respN.insertId);
     });
   }
 }
