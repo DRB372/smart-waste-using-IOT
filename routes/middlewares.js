@@ -16,3 +16,13 @@ module.exports.handleAvatar = avatars => async (req, res, next) => {
   req.file.storedFilename = await avatars.store(req.file.buffer);
   return next();
 };
+
+module.exports.redirectIfAuthN = (req, res, next) => {
+  if(req.user) return res.redirect(`/employee/profile/${req.user.employee_id}`);
+  return next();
+};
+
+module.exports.redirectIfNotAuthN = (req, res, next) => {
+  if(req.user) return next();
+  return res.redirect('/login');
+};

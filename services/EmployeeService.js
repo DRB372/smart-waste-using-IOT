@@ -42,6 +42,27 @@ class EmployeeService {
     });
   }
 
+  async getEmployeeByEmail(email) {
+    const sql = 
+    `SELECT E.employee_id, P.email, E.passwrd
+      FROM person AS P
+        JOIN employee AS E
+          ON E.person_id = P.person_id
+    WHERE P.email = ?`;
+
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, email, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => {
+      return resp.length === 0 ? null : resp[0];
+    });
+  }
+
   async addEmployee(data) {
     const personData = {
       full_name: data.full_name,

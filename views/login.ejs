@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Login | Smart Waste Management</title>
+
+    <link href="/vendors/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/vendors/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/vendors/css/nprogress.min.css" rel="stylesheet" />
+    <link href="/vendors/css/gentelella.min.css" rel="stylesheet" />
+  </head>
+
+  <body class="login">
+    <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+
+      <div class="login_wrapper">
+        <div class="form login_form">
+          <section class="login_content">
+            <form method="POST" action="/login">
+              <h1>Login Form</h1>
+              <div>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="email"
+                  placeholder="E-mail"
+                  required=""
+                />
+              </div>
+              <div>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="password"
+                  placeholder="Password"
+                  required=""
+                />
+              </div>
+              <input
+                class="btn btn-default btn-block"
+                style="margin-left: 0; background-color: #73879C; color: #FFF;"
+                type="submit"
+                name="submit"
+                value="Log in"
+              />
+
+              <div class="clearfix"></div>
+
+              <% if(error) { %>
+              <div class="text-danger" role="alert">Invalid email or password!</div>
+              <% } %>
+
+              <div class="separator">
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                  <p>
+                    ©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy
+                    and Terms
+                  </p>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

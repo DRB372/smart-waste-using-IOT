@@ -2,6 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const createError = require('http-errors');
 const middlewares = require('./middlewares');
+const utils = require('../lib/utils');
 
 const router = express.Router();
 
@@ -65,7 +66,7 @@ const validations = [
 module.exports = params => {
   const { employeeService, avatars } = params;
 
-  router.get('/', async (req, res, next) => {
+  router.get('/', middlewares.redirectIfNotAuthN, async (req, res, next) => {
     try {
       const employees = await employeeService.getEmployees();
 
@@ -79,7 +80,7 @@ module.exports = params => {
     }
   });
 
-  router.get('/profile/:employeeId', async (req, res, next) => {
+  router.get('/profile/:employeeId', middlewares.redirectIfNotAuthN, async (req, res, next) => {
     try {
       const result = await employeeService.getEmployeeById(req.params.employeeId);
       return result
@@ -94,7 +95,7 @@ module.exports = params => {
     }
   });
 
-  router.get('/new', (req, res) => {
+  router.get('/new', middlewares.redirectIfNotAuthN, (req, res) => {
     const errors = req.session.employee ? req.session.employee.errors : false;
     const employeeId = req.session.employee ? req.session.employee.employeeId : false;
     req.session.employee = {};
@@ -109,6 +110,7 @@ module.exports = params => {
 
   router.post(
     '/new',
+    middlewares.redirectIfNotAuthN,
     middlewares.upload.single('avatar'),
     middlewares.handleAvatar(avatars),
     validations,
@@ -125,7 +127,11 @@ module.exports = params => {
           req.body.avatar = req.file.storedFilename;
         }
 
-        const insertId = await employeeService.addEmployee(req.body);
+        const formData = req.body;
+        const hash = await utils.getHash(formData.passwrd);
+        formData.passwrd = hash;
+
+        const insertId = await employeeService.addEmployee(formData);
         req.session.employee = { employeeId: insertId };
         return res.redirect('/employee/new');
       } catch (error) {
@@ -138,7 +144,7 @@ module.exports = params => {
     }
   );
 
-  router.get('/avatar/:filename', (req, res) => {
+  router.get('/avatar/:filename', middlewares.redirectIfNotAuthN, (req, res) => {
     res.type('png');
     return res.sendFile(avatars.filepath(req.params.filename));
   });

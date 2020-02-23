@@ -1,9 +1,13 @@
 const express = require('express');
 const path = require('path');
 const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const createError = require('http-errors');
+
+const auth = require('./lib/auth');
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -36,8 +40,19 @@ app.use(
     keys: ['asadqwqwgfdgf', 'qewr213552345dsf'],
   })
 );
-
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'very secret',
+  resave: true,
+  saveUninitialized: false
+}));
+
+const passportConf = auth.passportConfig({employeeService});
+
+app.use(passportConf.initialize);
+app.use(passportConf.session);
+app.use(passportConf.setUser);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
