@@ -14,3 +14,9 @@ FROM person AS P
     JOIN employee AS E
         ON E.person_id = P.person_id
 WHERE E.employee_id = 1;
+
+SELECT E.employee_id, P.email, E.passwrd
+FROM person AS P
+    JOIN employee AS E
+        ON E.person_id = P.person_id
+WHERE P.email = 'alia@example.com';
