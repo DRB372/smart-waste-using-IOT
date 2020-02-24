@@ -20,3 +20,7 @@ FROM person AS P
     JOIN employee AS E
         ON E.person_id = P.person_id
 WHERE P.email = 'alia@example.com';
+
+UPDATE employee AS E JOIN person AS P ON E.person_id = P.person_id
+SET full_name='atif'
+WHERE employee_id=2
