@@ -43,8 +43,7 @@ class EmployeeService {
   }
 
   async getEmployeeByEmail(email) {
-    const sql = 
-    `SELECT E.employee_id, P.email, E.passwrd
+    const sql = `SELECT E.employee_id, P.email, E.passwrd
       FROM person AS P
         JOIN employee AS E
           ON E.person_id = P.person_id
@@ -97,13 +96,26 @@ class EmployeeService {
         this.db.query('INSERT INTO employee SET ?', employeeData, (err, result) => {
           if (!err) {
             resolve(result);
-          }
-          else {
+          } else {
             reject(err);
           }
         });
       }).then(respN => respN.insertId);
     });
+  }
+
+  async updateEmployeeById(uid, data) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE employee AS E JOIN person AS P ON E.person_id = P.person_id
+      SET ? WHERE employee_id = ?`;
+      this.db.query(sql, [data, uid], (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => resp);
   }
 }
 

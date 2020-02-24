@@ -65,10 +65,18 @@
                     <td><%= employee.email %></td>
                     <td><%= toProperCase(employee.employee_type) %></td>
                     <td><%= toProperCase(employee.shift) %></td>
-                    <td><a href="/employee/profile/<%= employee.employee_id %>">View</a></td>
+                    <td>
+                      <a class="text-info" href="/employee/profile/<%= employee.employee_id %>"
+                        >View</a
+                      >
+                      | <a href="/employee/edit/<%= employee.employee_id %>">Edit</a> |
+                      <a class="text-danger" href="">Delete</a>
+                    </td>
                   </tr>
                   <% });} else { %>
-                  <tr>No record found</tr>
+                  <tr>
+                    No record found
+                  </tr>
                   <% } %>
                 </tbody>
               </table>
