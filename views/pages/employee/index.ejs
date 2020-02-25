@@ -60,11 +60,11 @@
                     <td><%= employee.employee_id %></td>
                     <td><%= toProperCase(employee.full_name) %></td>
                     <td><%= toProperCase(employee.gender) %></td>
-                    <td><%= employee.cnic %></td>
-                    <td><%= employee.contact %></td>
-                    <td><%= employee.email %></td>
-                    <td><%= toProperCase(employee.employee_type) %></td>
-                    <td><%= toProperCase(employee.shift) %></td>
+                    <td><%= employee.cnic || 'N/A' %></td>
+                    <td><%= employee.contact || 'N/A' %></td>
+                    <td><%= employee.email || 'N/A' %></td>
+                    <td><%= employee.employee_type ? toProperCase(employee.employee_type) : 'N/A' %></td>
+                    <td><%= employee.shift ? toProperCase(employee.shift) : 'N/A' %></td>
                     <td>
                       <a class="text-info" href="/employee/profile/<%= employee.employee_id %>"
                         >View</a
