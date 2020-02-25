@@ -8,6 +8,9 @@ const fsunlink = util.promisify(fs.unlink);
 
 class AvatarService {
   constructor(directory) {
+    if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory);
+    }
     this.directory = directory;
   }
 
