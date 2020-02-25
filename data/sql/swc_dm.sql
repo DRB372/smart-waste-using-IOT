@@ -1,3 +1,9 @@
+INSERT INTO person(full_name, cnic, gender, email)
+    VALUES ('superuser', '12345-1234567-9', 'male', 'superuser@example.com');
+
+INSERT INTO employee(person_id, passwrd, created_at)
+VALUES (1, '12345678', NOW());
+
 SELECT * FROM person;
 SELECT * FROM employee;
 
