@@ -1,7 +1,5 @@
 const express = require('express');
 const path = require('path');
-const cookieSession = require('cookie-session');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -33,24 +31,18 @@ const app = express();
 
 const port = 3000;
 
+// sessions setup
 app.set('trust proxy', 1);
-
-app.use(
-  cookieSession({
-    name: 'session',
-    keys: ['asadqwqwgfdgf', 'qewr213552345dsf'],
-  })
-);
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
   secret: 'very secret',
   resave: true,
   saveUninitialized: false
 }));
 
-const passportConf = auth.passportConfig({employeeService});
+app.use(bodyParser.urlencoded({ extended: true }));
 
+// init passport
+const passportConf = auth.passportConfig({employeeService});
 app.use(passportConf.initialize);
 app.use(passportConf.session);
 app.use(passportConf.setUser);
