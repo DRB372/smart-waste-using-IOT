@@ -24,24 +24,24 @@ primary key(Login_ID)
 
 CREATE TABLE person (
     person_id INT PRIMARY KEY AUTO_INCREMENT,
-    full_name VARCHAR(50),
+    full_name VARCHAR(50) NOT NULL,
     cnic NCHAR(15) UNIQUE,
     home_address VARCHAR(50),
-    gender ENUM('male', 'female'),
+    gender ENUM('male', 'female') NOT NULL,
     contact NCHAR(12),
-    email VARCHAR(50),
+    email VARCHAR(50) NOT NULL,
     dob DATE
 );
 
 CREATE TABLE employee (
     employee_id INT PRIMARY KEY AUTO_INCREMENT,
     avatar VARCHAR(100),
-    employee_type VARCHAR(50),
+    employee_type VARCHAR(50)  NOT NULL,
     created_at DATETIME NOT NULL,
     shift ENUM('morning', 'noon', 'night'),
     account_no INT,
-    passwrd VARCHAR(50),
-    person_id INT,
+    passwrd VARCHAR(50)  NOT NULL,
+    person_id INT NOT NULL,
     FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
 
