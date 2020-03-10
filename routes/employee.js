@@ -50,7 +50,7 @@ const validations = [
     .not()
     .isEmpty()
     .withMessage('Shift type is required'),
-  check('account_no')
+  check('bank_account')
     .not()
     .isEmpty()
     .trim()
@@ -81,7 +81,20 @@ module.exports = params => {
       return next(e);
     }
   });
-
+  router.get('/delete/:employeeId', middlewares.redirectIfNotAuthN, async (req, res, next) => {
+    try {
+      const result = await employeeService.getEmployeeById(req.params.employeeId);
+      return result
+        ? res.render('layout', {
+            title: result.full_name,
+            template: 'employee/delete',
+            employee: result,
+          })
+        : next(createError(404, "That user doesn't exist"));
+    } catch (e) {
+      return next(e);
+    }
+  });
   router.get('/profile/:employeeId', middlewares.redirectIfNotAuthN, async (req, res, next) => {
     try {
       const result = await employeeService.getEmployeeById(req.params.employeeId);
@@ -202,6 +215,16 @@ module.exports = params => {
       }
     }
   );
+
+  router.post('/delete/:employeeId', async (req, res, next) => {
+    try {
+      await employeeService.deleteEmployeeById(req.params.employeeId, req.body);
+
+      return res.redirect(`/employee`);
+    } catch (error) {
+      return next(error);
+    }
+  });
 
   router.get('/avatar/:filename', middlewares.redirectIfNotAuthN, (req, res) => {
     res.type('png');

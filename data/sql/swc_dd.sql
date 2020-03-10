@@ -14,14 +14,6 @@ DROP TABLE IF EXISTS person;
 
 ALTER TABLE employee CHANGE COLUMN avatar avatar varchar(100);
 
-create table SignIn(
-Login_ID int,
-Email varchar(150) NOT NULL,
-SignIn_Password varchar(150),
-Designation varchar(30),
-primary key(Login_ID)
-);
-
 CREATE TABLE person (
     person_id INT PRIMARY KEY AUTO_INCREMENT,
     full_name VARCHAR(100) NOT NULL,
@@ -32,6 +24,7 @@ CREATE TABLE person (
     email VARCHAR(50) NOT NULL,
     dob DATE
 ) engine = InnoDB AUTO_INCREMENT = 1;
+
 
 CREATE TABLE employee (
     employee_id INT PRIMARY KEY AUTO_INCREMENT,

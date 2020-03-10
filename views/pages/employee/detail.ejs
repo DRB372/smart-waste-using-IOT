@@ -14,15 +14,15 @@
               data-toggle="dropdown"
               role="button"
               aria-expanded="false"
-              ><i class="fa fa-wrench"></i
+              ><i class="fa fa-cog" aria-hidden="true"></i
             ></a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Settings 1</a>
-              <a class="dropdown-item" href="#">Settings 2</a>
+              <a class="dropdown-item" href="/employee/edit/<%= employee.employee_id %>">Edit Profile</a>
+              <a class="dropdown-item" href="/employee/delete/<%= employee.employee_id %>">Delete</a>
             </div>
           </li>
           <li>
-            <a class="close-link"><i class="fa fa-close"></i></a>
+            <a class="close-link" href="/employee"><i class="fa fa-close"></i></a>
           </li>
         </ul>
         <div class="clearfix"></div>
@@ -151,7 +151,7 @@
                     </tr>
                     <tr>
                       <th scope="row">Bank Account</th>
-                      <td><%= employee.account_no %></td>
+                      <td><%= employee.bank_account %></td>
                       <th scope="row">Created At</th>
                       <td><%= employee.created_at.toLocaleString() %></td>
                     </tr>
