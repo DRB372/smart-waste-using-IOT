@@ -20,12 +20,13 @@ db.connect(err => {
   if (err) throw err;
   console.log('Connected!');
 });
-
+const VehicleService = require('./services/VehicleService');
 const EmployeeService = require('./services/EmployeeService');
 const AvatarService = require('./services/AvatarService');
 
 const employeeService = new EmployeeService(db);
 const avatars = new AvatarService(path.join(__dirname, './data/avatars'));
+const vehicleService = new VehicleService(db);
 const routes = require('./routes');
 
 const app = express();
@@ -42,13 +43,15 @@ app.use(
 );
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-  secret: 'very secret',
-  resave: true,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    secret: 'very secret',
+    resave: true,
+    saveUninitialized: false,
+  })
+);
 
-const passportConf = auth.passportConfig({employeeService});
+const passportConf = auth.passportConfig({ employeeService });
 
 app.use(passportConf.initialize);
 app.use(passportConf.session);
@@ -62,10 +65,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes({ employeeService, avatars }));
+app.use(
+  '/',
+  routes({
+    vehicleService,
+    employeeService,
+    avatars,
+  })
+);
 
 app.use((req, res, next) => {
-  return next(createError(404, 'Sorry but we couldn\'t find this page'));
+  return next(createError(404, "Sorry but we couldn't find this page"));
 });
 
 app.use((err, req, res, next) => {

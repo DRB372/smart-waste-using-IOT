@@ -7,7 +7,7 @@ class EmployeeService {
     const sql = `SELECT
       E.employee_id, P.full_name, P.gender, P.cnic, P.contact, P.email, E.employee_type, E.shift
     FROM person AS P
-      JOIN employee AS E ON E.person_id = P.person_id;
+      JOIN employee AS E ON E.person_id = P.person_id where is_active="1";
     `;
 
     return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ class EmployeeService {
   async getEmployeeById(uid) {
     const sql = `SELECT E.employee_id, P.full_name, P.gender, P.cnic, P.contact,
     P.email, P.dob, P.home_address,
-    E.avatar, E.employee_type, E.shift, E.account_no, E.created_at
+    E.avatar, E.employee_type, E.shift, E.bank_account, P.created_at
     FROM person AS P
     JOIN employee AS E ON E.person_id = P.person_id
     WHERE E.employee_id = ?`;
@@ -70,7 +70,9 @@ class EmployeeService {
       gender: data.gender,
       contact: data.contact,
       email: data.email,
+      created_at: new Date(),
       dob: data.dob,
+      remarks: data.remarks,
     };
 
     return new Promise((resolve, reject) => {
@@ -86,9 +88,8 @@ class EmployeeService {
         avatar: data.avatar,
         employee_type: data.employee_type,
         shift: data.shift,
-        account_no: data.account_no,
+        bank_account: data.bank_account,
         passwrd: data.passwrd,
-        created_at: new Date(),
         person_id: resp.insertId,
       };
 
@@ -109,6 +110,20 @@ class EmployeeService {
       const sql = `UPDATE employee AS E JOIN person AS P ON E.person_id = P.person_id
       SET ? WHERE employee_id = ?`;
       this.db.query(sql, [data, uid], (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => resp);
+  }
+
+  async deleteEmployeeById(uid) {
+    return new Promise((resolve, reject) => {
+      const sql = ` UPDATE person AS p JOIN employee AS E ON p.person_id = E.person_id
+      SET is_active="0" WHERE employee_id = ?`;
+      this.db.query(sql, [uid], (err, result) => {
         if (!err) {
           resolve(result);
         } else {
