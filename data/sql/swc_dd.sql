@@ -14,37 +14,32 @@ DROP TABLE IF EXISTS person;
 
 ALTER TABLE employee CHANGE COLUMN avatar avatar varchar(100);
 
-create table SignIn(
-Login_ID int,
-Email varchar(150) NOT NULL,
-SignIn_Password varchar(150),
-Designation varchar(30),
-primary key(Login_ID)
-);
-
 CREATE TABLE person (
     person_id INT PRIMARY KEY AUTO_INCREMENT,
-    full_name VARCHAR(50),
-    cnic NCHAR(15) UNIQUE,
-    home_address VARCHAR(50),
-    gender ENUM('male', 'female'),
+    full_name VARCHAR(255),
+    cnic NCHAR(15) NULL UNIQUE,
     contact NCHAR(12),
-    email VARCHAR(50),
-    dob DATE
+    home_address VARCHAR(255),
+    gender ENUM('male', 'female') NOT NULL,
+    email VARCHAR(50) NULL UNIQUE,
+    dob DATE,
+    created_at DATETIME NOT NULL,
+    is_active BOOLEAN Default "1" ,
+    remarks varchar(255)
 );
+
 
 CREATE TABLE employee (
     employee_id INT PRIMARY KEY AUTO_INCREMENT,
     avatar VARCHAR(100),
-    employee_type VARCHAR(50),
-    created_at DATETIME NOT NULL,
-    shift ENUM('morning', 'noon', 'night'),
-    account_no INT,
-    passwrd VARCHAR(50),
+    employee_type VARCHAR(50) NOT NULL,
+    shift ENUM('morning', 'noon', 'night') NOT NULL,
+    bank_account varchar(100) NULL UNIQUE,
+    passwrd VARCHAR(60),
+    last_login DATETIME NOT NULL,
     person_id INT,
     FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
-
 create table Salary(
 Employee_ID int,
 Salary_Month varchar(15),
