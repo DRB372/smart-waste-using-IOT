@@ -1,7 +1,9 @@
 const express = require('express');
-const passport = require('passport');
+const authRoute = require('./auth');
 const employeeRoute = require('./employee');
 const vehicleRoute = require('./vehicle');
+const binRoute = require('./bins');
+const binApiRoute = require('./bins/api');
 const middlewares = require('./middlewares');
 
 const router = express.Router();
@@ -11,25 +13,11 @@ module.exports = params => {
     res.render('layout', { title: 'Dashboard', template: 'index' });
   });
 
-  router.get('/login', middlewares.redirectIfAuthN, (req, res) =>
-    res.render('login', { error: req.query.error })
-  );
-
-  router.post(
-    '/login',
-    passport.authenticate('local', {
-      successRedirect: '/',
-      failureRedirect: '/login?error=true',
-    })
-  );
-
-  router.get('/logout', middlewares.redirectIfNotAuthN, (req, res) => {
-    req.logout();
-    return res.redirect('/login');
-  });
-
+  router.use('/auth', authRoute());
   router.use('/employee', employeeRoute(params));
   router.use('/vehicle', vehicleRoute(params));
+  router.use('/bins', binRoute(params));
+  router.use('/api/bins', binApiRoute(params));
 
   return router;
 };

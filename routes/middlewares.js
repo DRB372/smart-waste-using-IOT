@@ -24,5 +24,5 @@ module.exports.redirectIfAuthN = (req, res, next) => {
 
 module.exports.redirectIfNotAuthN = (req, res, next) => {
   if(req.user) return next();
-  return res.redirect('/login');
+  return res.redirect('/auth/login');
 };
