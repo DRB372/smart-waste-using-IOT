@@ -8,6 +8,7 @@ VALUES (3, '12345678', NOW());
 
 SELECT * FROM person;
 SELECT * FROM employee;
+SELECT * FROM bins;
 
 SELECT * FROM person AS P JOIN employee AS E ON E.person_id = P.person_id;
 
