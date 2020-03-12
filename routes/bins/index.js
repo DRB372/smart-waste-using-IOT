@@ -24,6 +24,12 @@ const validations = [
     .isEmpty()
     .escape()
     .withMessage('A longitude is required'),
+  check('bin_address')
+    .trim()
+    .escape(),
+  check('remarks')
+    .trim()
+    .escape(),
 ];
 
 module.exports = params => {
@@ -43,30 +49,16 @@ module.exports = params => {
     }
   });
 
-  router.post('/new', validations, async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json(errors);
-    }
-    const formData = req.body;
-    const result = await binService.addNewBin(formData);
-    if (result.affectedRows !== 1) {
-      return res.status(400).json({ message: 'Unable to add new bin.' });
-    }
-    return res.status(201).json({ message: 'New bin added successfully.' });
-  });
-
   router.get('/details/:binId', middlewares.redirectIfNotAuthN, async (req, res, next) => {
     try {
       const result = await binService.getBinById(req.params.binId);
       return result
         ? res.render('layout', {
-            title: result.full_name,
-            template: 'vehicle/detail',
-            vehicle: result,
+            title: `Bin ${result.bin_id}`,
+            template: 'bins/detail',
+            bins: result,
           })
-        : next(createError(404, "That user doesn't exist"));
+        : next(createError(404, "That Bin doesn't exist"));
     } catch (e) {
       return next(e);
     }
@@ -77,24 +69,64 @@ module.exports = params => {
       const result = await binService.getBinById(req.params.binId);
       return result
         ? res.render('layout', {
-            title: result.full_name,
-            template: 'vehicle/delete',
-            vehicle: result,
+            title: `Bin ${result.bin_id}`,
+            template: 'bins/delete',
+            bins: result,
           })
         : next(createError(404, "That user doesn't exist"));
     } catch (e) {
       return next(e);
     }
   });
-  router.post('/delete/:binId', async (req, res, next) => {
-    try {
-      await binService.deleteVehicleById(req.params.binId, req.body);
 
-      return res.redirect(`/vehicle`);
+  router.post('/delete/:binId', middlewares.redirectIfNotAuthN, async (req, res, next) => {
+    try {
+      await binService.deleteBinById(req.params.binId, req.body);
+
+      return res.redirect(`/bins`);
     } catch (error) {
       return next(error);
     }
   });
+
+  router.get('/edit/:binId', middlewares.redirectIfNotAuthN, async (req, res, next) => {
+    try {
+      const errors = req.session.bin ? req.session.bin.errors : false;
+      req.session.bin = {};
+
+      const result = await binService.getBinById(req.params.binId);
+
+      return result
+        ? res.render('layout', {
+            title: `Bin ${result.bin_id}`,
+            template: 'bins/edit',
+            errors,
+            bins: result,
+          })
+        : next(createError(404, "That bin doesn't exist"));
+    } catch (e) {
+      return next(e);
+    }
+  });
+
+  router.post(
+    '/edit/:binId',
+    middlewares.redirectIfNotAuthN,
+    validations,
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        req.session.bin = { errors: errors.array() };
+        return res.redirect(`/bins/edit/${req.params.binId}`);
+      }
+      try {
+        await binService.updateBinById(req.params.binId, req.body);
+        return res.redirect(`/bins`);
+      } catch (error) {
+        return next(error);
+      }
+    }
+  );
 
   return router;
 };

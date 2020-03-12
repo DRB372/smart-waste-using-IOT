@@ -61,8 +61,21 @@ class BinService {
 
   async deleteBinById(uid) {
     return new Promise((resolve, reject) => {
-      const sql = `UPDATE vehicle SET is_active=FALSE WHERE vehicle_id = ?`;
+      const sql = `UPDATE bins SET is_active=FALSE WHERE bin_id = ?`;
       this.db.query(sql, [uid], (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => resp);
+  }
+
+  async updateBinById(uid, data) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE bins SET ? WHERE bin_id = ? AND is_active=TRUE`;
+      this.db.query(sql, [data, uid], (err, result) => {
         if (!err) {
           resolve(result);
         } else {
