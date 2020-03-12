@@ -21,11 +21,13 @@ db.connect(err => {
 });
 const VehicleService = require('./services/VehicleService');
 const EmployeeService = require('./services/EmployeeService');
+const BinService = require('./services/BinService');
 const AvatarService = require('./services/AvatarService');
 
 const employeeService = new EmployeeService(db);
 const avatars = new AvatarService(path.join(__dirname, './data/avatars'));
 const vehicleService = new VehicleService(db);
+const binService = new BinService(db);
 const routes = require('./routes');
 
 const app = express();
@@ -61,6 +63,7 @@ app.use(
   routes({
     vehicleService,
     employeeService,
+    binService,
     avatars,
   })
 );
@@ -77,6 +80,6 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Express server listening port on ${port}!`);
 });
