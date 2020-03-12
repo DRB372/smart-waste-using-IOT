@@ -1,5 +1,6 @@
 const express = require('express');
 const authRoute = require('./auth');
+const authApiRoute = require('./auth/api');
 const employeeRoute = require('./employee');
 const vehicleRoute = require('./vehicle');
 const binRoute = require('./bins');
@@ -14,6 +15,7 @@ module.exports = params => {
   });
 
   router.use('/auth', authRoute());
+  router.use('/api/auth', authApiRoute());
   router.use('/employee', employeeRoute(params));
   router.use('/vehicle', vehicleRoute(params));
   router.use('/bins', binRoute(params));
