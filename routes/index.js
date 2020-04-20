@@ -10,8 +10,24 @@ const middlewares = require('./middlewares');
 const router = express.Router();
 
 module.exports = params => {
-  router.get('/', middlewares.redirectIfNotAuthN, (req, res) => {
-    res.render('layout', { title: 'Dashboard', template: 'index' });
+  const { binService, indexService } = params;
+  router.get('/', middlewares.redirectIfNotAuthN, async (req, res, next) => {
+    try {
+      const bins = await binService.getBins();
+      const vehicleCount = await indexService.getVehicleCount();
+      const binsCount = await indexService.getBinsCount();
+      const employeeCount = await indexService.getEmployeeCount();
+      return res.render('layout', {
+        title: 'Dashboard',
+        template: 'index',
+        employeeCount,
+        binsCount,
+        vehicleCount,
+        bins,
+      });
+    } catch (e) {
+      return next(e);
+    }
   });
 
   router.use('/auth', authRoute());

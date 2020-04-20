@@ -23,11 +23,14 @@ const VehicleService = require('./services/VehicleService');
 const EmployeeService = require('./services/EmployeeService');
 const BinService = require('./services/BinService');
 const AvatarService = require('./services/AvatarService');
+const IndexService = require('./services/IndexService');
+
 
 const employeeService = new EmployeeService(db);
 const avatars = new AvatarService(path.join(__dirname, './data/avatars'));
 const vehicleService = new VehicleService(db);
 const binService = new BinService(db);
+const indexService = new IndexService(db);
 const routes = require('./routes');
 
 const app = express();
@@ -64,6 +67,7 @@ app.use(
     vehicleService,
     employeeService,
     binService,
+    indexService,
     avatars,
   })
 );

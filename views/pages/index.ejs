@@ -1,8 +1,34 @@
 <div class="row">
   <div class="col-md-12 col-sm-12">
+    <div class="row" style="display: inline-block;">
+      <div class="tile_count">
+        <div class="col-md-auto col-sm-4  tile_stats_count">
+          <span class="count_top"><i class="fa fa-users"></i> Total Employees</span>
+          <div class="count"><%- employeeCount[0].Count %></div>
+          <span class="count_bottom"><i class="green">Active </i></span>
+        </div>
+        <div class="col-md-auto col-sm-4  tile_stats_count">
+          <span class="count_top"><i class="fa fa-trash"></i> Total Bins</span>
+          <div class="count"><%- binsCount[0].Count %></div>
+          <span class="count_bottom"><i class="green">Active </i></span>
+        </div>
+        <div class="col-md-auto col-sm-4  tile_stats_count">
+          <span class="count_top"><i class="fa fa-truck"></i> Total Vehicles</span>
+          <div class="count"><%- vehicleCount[0].Count %></div>
+          <span class="count_bottom"><i class="green">Active </i> </span>
+        </div>
+        <div class="col-md-auto col-sm-4  tile_stats_count">
+          <span class="count_top"><i class="fa fa-road"></i> Total Routes</span>
+          <div class="count">4,567</div>
+          <span class="count_bottom"><i class="green"> Active </i></span>
+        </div>
+
+        
+      </div>
+    </div>
     <div class="x_panel">
       <div class="x_title">
-        <h2>Plain Page</h2>
+        <h2>Active Bins</h2>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -27,9 +53,41 @@
         </ul>
         <div class="clearfix"></div>
       </div>
+
       <div class="x_content">
-        Add content to the page ...
+        <div id="map" style="height:450px"></div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  function initMap() {
+    var locations = [];
+    ('<% bins.forEach((bin, index) => { %>');
+    locations.push('<%- bin.latitude%>', '<%- bin.longitude%>');
+    ('<% }); %>');
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4,
+      center: new google.maps.LatLng(locations[0], locations[1]),
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+    });
+
+    var markers, i;
+    var x = 0;
+    var y = 1;
+    for (i = 0; i < locations.length / 2; i++) {
+      markers = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[x], locations[y]),
+        map: map,
+      });
+      x = x + 2;
+      y = y + 2;
+    }
+  }
+</script>
+<script
+  async
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1-X98wmBJhZ8TDs00sDNsB-o11L6fzFE&callback=initMap"
+></script>
