@@ -48,7 +48,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% if(vehicles) {vehicles.forEach((vehicle, index) => { %>
+                    <% if(vehicles.length>0) {vehicles.forEach((vehicle, index) => { %>
                     <tr>
                       <td><%= index + 1 %></td>
                       <td><%= vehicle.vehicle_id %></td>

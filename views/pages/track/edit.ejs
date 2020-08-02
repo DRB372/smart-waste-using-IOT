@@ -2,14 +2,14 @@
   <div class="col-md-12 col-sm-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Update Bin</h2>
+        <h2>Edit Track</h2>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
           </li>
 
           <li>
-            <a class="close-link" href="/bins"><i class="fa fa-close"></i></a>
+            <a class="close-link" href="/track"><i class="fa fa-close"></i></a>
           </li>
         </ul>
         <div class="clearfix"></div>
@@ -25,53 +25,42 @@
           </div>
         </div>
         <% } %>
-        <form action="/bins/edit/<%= bins.bin_id %>" method="POST" novalidate>
+        
+        <form action="/track/edit/<%= track.track_id %>" method="POST" novalidate>
           <div class="field item form-group">
             <label class="col-form-label col-md-3 col-sm-3  label-align"
-              >Bin ID<span class="required"> *</span></label
+              >Name<span class="required"> *</span></label
             >
             <div class="col-md-6 col-sm-6">
-              <input class="form-control" name="bin_id"   value="<%= bins.bin_id %>" />
+              <input
+                class="form-control"
+                data-validate-length-range="6"
+                data-validate-words="2"
+                name="track_name"
+                placeholder="both name(s) e.g Sialkot Road Gujranwala"
+                required="required"
+                value="<%= track.track_name %>"
+              />
             </div>
           </div>
-
           <div class="field item form-group">
             <label class="col-form-label col-md-3 col-sm-3  label-align"
-              >Latitude<span class="required"> *</span></label
+              >Description<span class="required">*</span></label
             >
             <div class="col-md-6 col-sm-6">
-              <input class="form-control" name="latitude"   value="<%= bins.latitude %>" />
-            </div>
-          </div>
-
-          <div class="field item form-group">
-            <label class="col-form-label col-md-3 col-sm-3  label-align"
-              >Longitude<span class="required"> *</span></label
-            >
-            <div class="col-md-6 col-sm-6">
-              <input class="form-control" name="longitude"   value="<%= bins.longitude %>" />
-            </div>
-          </div>
-
-          <div class="field item form-group">
-            <label class="col-form-label col-md-3 col-sm-3  label-align"
-              >Bin Address<span class="required"> *</span></label
-            >
-            <div class="col-md-6 col-sm-6">
-              <input class="form-control" name="bin_address" value="<%= bins.bin_address %>" />
-            </div>
-          </div>
-
-          <div class="field item form-group">
-            <label class="col-form-label col-md-3 col-sm-3  label-align">Remarks</label>
-            <div class="col-md-6 col-sm-6">
-              <input class="form-control" name="remarks" value="<%= bins.remarks %>" />
+              <input
+                class="form-control"
+                name="description"
+                type="text"
+                required="required"
+                value="<%= track.description %>"
+              />
             </div>
           </div>
 
           <div class="form-group">
             <div class="col-md-6 offset-md-3">
-              <button type="submit" class="btn btn-primary">Update</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
               <button type="reset" class="btn btn-success">Reset</button>
             </div>
           </div>

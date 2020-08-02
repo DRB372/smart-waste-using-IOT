@@ -43,30 +43,7 @@
               >Home</a
             >
           </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              id="profile-tab"
-              data-toggle="tab"
-              href="#profile"
-              role="tab"
-              aria-controls="profile"
-              aria-selected="false"
-              >Profile</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              id="contact-tab"
-              data-toggle="tab"
-              href="#contact"
-              role="tab"
-              aria-controls="contact"
-              aria-selected="false"
-              >Contact</a
-            >
-          </li>
+          
         </ul>
         <div class="tab-content" id="myTabContent">
           <div
@@ -76,51 +53,22 @@
             aria-labelledby="home-tab"
           >
             <div class="col-md-4 widget widget_tally_box">
-              <div class="x_panel fixed_height_390">
+              <div class="x_panel">
                 <div class="x_content">
-                  <div class="flex">
-                    <ul class="list-inline widget_profile_box">
-                      <li></li>
-                      <li class="text-center">
-                        <img
+                  <h4 class="name"> <span style="padding:10px" class="fa fa-car"></span><%= toProperCase(vehicle.full_name || 'N/A') %></h4>
+                 
+                  <img
                           src="<%= vehicle.avatar ? `/vehicle/avatar/${vehicle.avatar}` : '/img/placeholder-avatar.png' %>"
-                          alt="..."
-                          class="img-circle profile_img"
+                          alt="..." height="100%" width="100%"
                         />
-                      </li>
-                      <li></li>
-                    </ul>
-                  </div>
-
-                  <h3 class="name"><%= toProperCase(vehicle.full_name) %></h3>
-
-                  <div class="flex">
-                    <ul class="list-inline count2">
-                      <li>
-                        <h3>123</h3>
-                        <span>Articles</span>
-                      </li>
-                      <li>
-                        <h3>1234</h3>
-                        <span>Followers</span>
-                      </li>
-                      <li>
-                        <h3>123</h3>
-                        <span>Following</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <p>
-                    If you've decided to go in development mode and tweak all of this a bit, there
-                    are few things you should do.
-                  </p>
+  
                 </div>
               </div>
             </div>
 
             <div class="col-md-8">
-              <div class="x_panel">
-                <div class="x_content">
+              <div class="x_panel ">
+                <div class="x_content ">
                   <table class="table">
                     <tbody>
                       <tr>
@@ -149,18 +97,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
-            Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson
-            artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo
-            enim craft beer mlkshk aliquip
-          </div>
-          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
-            squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson
-            artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo
-            enim craft beer mlkshk
-          </div>
+          
         </div>
       </div>
     </div>

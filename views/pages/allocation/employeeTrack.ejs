@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Assign Track to Employees</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li>
+              <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+  
+            <li>
+              <a class="close-link" href="/employee"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <form action="/allocation/employeeTrack" method="POST" novalidate >
+            
+            <div class="field item form-group">
+                <label class="col-form-label col-md-3 col-sm-3  label-align"
+                  >Select Driver<span class="required">*</span></label
+                >
+                <div class="col-md-6 col-sm-6">
+                  <select class="form-control" name="employee_id">
+                  
+                    <% if(drivers) {drivers.forEach((driver, index) => { %>
+                        <option value="<%= driver.employee_id %>"><%= driver.full_name %></option>
+                       
+                        <% });}%>
+
+                  </select>
+                </div>
+              </div>
+              <div class="field item form-group">
+                <label class="col-form-label col-md-3 col-sm-3  label-align"
+                  >Select Track<span class="required">*</span></label
+                >
+                <div class="col-md-6 col-sm-6">
+                  <select class="form-control" name="track_id">
+                    
+                    <% if(tracks) {tracks.forEach((track, index) => { %>
+                        <option value="<%= track.track_id %>"><%= track.track_name %></option>
+                        
+                        <% });}%>
+
+                  </select>
+                </div>
+              </div>
+          
+            <div class="form-group">
+              <div class="col-md-6 offset-md-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-success">Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <script src="../vendors/validator/multifield.js"></script>
+  <script src="../vendors/validator/validator.js"></script> -->
+  
+  <script>
+    var validator = new FormValidator({ events: ['blur', 'input', 'change'] }, document.forms[0]);
+    document.forms[0].onsubmit = function(e) {
+      var submit = true,
+        validatorResult = validator.checkAll(this);
+      console.log(validatorResult);
+      return !!validatorResult.valid;
+    };
+    document.forms[0].onreset = function(e) {
+      validator.reset();
+    };
+    $('.toggleValidationTooltips')
+      .change(() => {
+        validator.settings.alerts = !this.checked;
+        if (this.checked) $('form .alert').remove();
+      })
+      .prop('checked', false);
+  </script>
+  
