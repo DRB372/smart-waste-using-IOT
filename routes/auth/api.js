@@ -7,6 +7,7 @@ const router = express.Router();
 
 module.exports = () => {
   router.post('/login', (req, res, next) => {
+   
     passport.authenticate('local', { session: false }, (err, user) => {
       if (err || !user) {
         return res.status(400).json({ message: 'Username or password is incorrect' });
@@ -15,8 +16,13 @@ module.exports = () => {
         if (_err) {
           res.send(_err);
         }
-        const token = jwt.sign({ id: user.email }, process.env.JWT_SECRET, { expiresIn: 3600 });
-        return res.json({ success: true, token });
+        if(user.employee_type === 'driver'){
+        const token = jwt.sign({ id: user.email}, process.env.JWT_SECRET, { expiresIn: 380000 });
+        return res.status(201).json({ message: 'Login Successfully', id:user.employee_id,success: true, token });}
+        else{
+        return res.status(400).json({ message: 'Username or password is incorrect' });
+
+        }
       });
     })(req, res, next);
   });

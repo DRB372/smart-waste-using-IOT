@@ -98,11 +98,17 @@ module.exports = params => {
   router.get('/profile/:employeeId', middlewares.redirectIfNotAuthN, async (req, res, next) => {
     try {
       const result = await employeeService.getEmployeeById(req.params.employeeId);
+      const tracks = await employeeService.getTracksByEmployeeId(req.params.employeeId);
+      const vehicles = await employeeService.getVehicleByEmployeeId(req.params.employeeId);
+
+     
       return result
         ? res.render('layout', {
             title: result.full_name,
             template: 'employee/detail',
             employee: result,
+            tracks,
+            vehicles,
           })
         : next(createError(404, "That user doesn't exist"));
     } catch (e) {

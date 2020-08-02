@@ -3,7 +3,9 @@ const authRoute = require('./auth');
 const authApiRoute = require('./auth/api');
 const employeeRoute = require('./employee');
 const vehicleRoute = require('./vehicle');
+const trackRoute = require('./track');
 const binRoute = require('./bins');
+const allocatinRoute = require('./allocation')
 const binApiRoute = require('./bins/api');
 const middlewares = require('./middlewares');
 
@@ -17,11 +19,14 @@ module.exports = params => {
       const vehicleCount = await indexService.getVehicleCount();
       const binsCount = await indexService.getBinsCount();
       const employeeCount = await indexService.getEmployeeCount();
+      const trackCount = await indexService.getTrackCount();
+   
       return res.render('layout', {
         title: 'Dashboard',
         template: 'index',
         employeeCount,
         binsCount,
+        trackCount,
         vehicleCount,
         bins,
       });
@@ -29,12 +34,26 @@ module.exports = params => {
       return next(e);
     }
   });
-
+  router.get('/about', middlewares.redirectIfNotAuthN, async (req, res, next) => {
+    try {
+     
+      return res.render('layout', {
+        title: 'About Us',
+        template: 'about/index',
+      });
+    } catch (e) {
+      return next(e);
+    }
+  });
+ 
   router.use('/auth', authRoute());
   router.use('/api/auth', authApiRoute());
   router.use('/employee', employeeRoute(params));
   router.use('/vehicle', vehicleRoute(params));
+  router.use('/track', trackRoute(params));
   router.use('/bins', binRoute(params));
+  router.use('/allocation',  allocatinRoute(params));
+
   router.use('/api/bins', binApiRoute(params));
 
   return router;
