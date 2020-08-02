@@ -22,6 +22,8 @@ db.connect(err => {
 const VehicleService = require('./services/VehicleService');
 const EmployeeService = require('./services/EmployeeService');
 const BinService = require('./services/BinService');
+const TrackService = require('./services/TrackService');
+const AllocationService = require('./services/AllocationService')
 const AvatarService = require('./services/AvatarService');
 const IndexService = require('./services/IndexService');
 
@@ -30,7 +32,9 @@ const employeeService = new EmployeeService(db);
 const avatars = new AvatarService(path.join(__dirname, './data/avatars'));
 const vehicleService = new VehicleService(db);
 const binService = new BinService(db);
+const trackService = new TrackService(db);
 const indexService = new IndexService(db);
+const allocationService = new AllocationService(db);
 const routes = require('./routes');
 
 const app = express();
@@ -69,6 +73,8 @@ app.use(
     binService,
     indexService,
     avatars,
+    trackService,
+    allocationService,
   })
 );
 
