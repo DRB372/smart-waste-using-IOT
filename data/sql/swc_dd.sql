@@ -25,6 +25,14 @@ CREATE TABLE person (
     dob DATE
 ) engine = InnoDB AUTO_INCREMENT = 1;
 
+CREATE TABLE employee_track (
+    employee_id INT ,
+    track_id INT ,
+    created_at DATETIME NOT NULL,
+    is_active BOOLEAN default true,
+    FOREIGN KEY (employee_id) REFERENCES employee (employee_id),
+    FOREIGN KEY (track_id) REFERENCES track (track_id)
+) 
 
 CREATE TABLE employee (
     employee_id INT PRIMARY KEY AUTO_INCREMENT,

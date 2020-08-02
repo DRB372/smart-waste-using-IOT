@@ -12,6 +12,9 @@ SELECT * FROM bins;
 
 SELECT * FROM person AS P JOIN employee AS E ON E.person_id = P.person_id;
 
+SELECT T.track_name, T.description FROM track AS T
+      JOIN employee_track AS E ON E.track_id = T.track_id where E.employee_id="3"
+
 SELECT E.employee_id, P.full_name, P.gender, P.cnic, P.contact, P.email, E.employee_type, E.shift
 FROM person AS P
     JOIN employee AS E
