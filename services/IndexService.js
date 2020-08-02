@@ -4,7 +4,7 @@ class IndexService {
   }
 
   async getEmployeeCount() {
-    const sql = `select count(employee_id) As Count from employee`;
+    const sql = `select count(employee_id) As Count from employee `;
 
     return new Promise((resolve, reject) => {
       this.db.query(sql, (err, result) => {
@@ -18,7 +18,7 @@ class IndexService {
   }
 
   async getVehicleCount() {
-    const sql = `select count(vehicle_id) As Count from vehicle`;
+    const sql = `select count(vehicle_id) As Count from vehicle WHERE is_active=TRUE`;
 
     return new Promise((resolve, reject) => {
       this.db.query(sql, (err, result) => {
@@ -32,7 +32,21 @@ class IndexService {
   }
 
   async getBinsCount() {
-    const sql = `select count(bin_id) As Count from bins`;
+    const sql = `select count(bin_id) As Count from bins WHERE is_active=TRUE`;
+
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => resp);
+  }
+
+  async getTrackCount() {
+    const sql = `select count(track_id) As Count from track WHERE is_active=TRUE`;
 
     return new Promise((resolve, reject) => {
       this.db.query(sql, (err, result) => {

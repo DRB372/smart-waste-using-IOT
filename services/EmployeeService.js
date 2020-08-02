@@ -43,7 +43,7 @@ class EmployeeService {
   }
 
   async getEmployeeByEmail(email) {
-    const sql = `SELECT E.employee_id, P.email, E.passwrd
+    const sql = `SELECT E.employee_id, P.email, E.passwrd, E.employee_type
       FROM person AS P
         JOIN employee AS E
           ON E.person_id = P.person_id
@@ -131,6 +131,88 @@ class EmployeeService {
         }
       });
     }).then(resp => resp);
+  }
+  async getDrivers() {
+    const sql = `SELECT
+      E.employee_id, P.full_name FROM person AS P
+      JOIN employee AS E ON E.person_id = P.person_id where E.employee_type="driver" AND is_active=true;
+    `;
+
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    }).then(resp => resp);
+  }
+ 
+  async assignTrack(data) {
+    const Data = {
+      track_id: data.track_id,
+      employee_id: data.employee_id,
+      created_at: new Date(),
+      is_active:true,
+    };
+   
+return new Promise((resolve, reject) => {
+      this.db.query('INSERT INTO employee_track SET ?', Data, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+  async getTracksByEmployeeId(uid) {
+    const sql = `SELECT T.track_name, T.description, T.track_id ,E.employee_track_id FROM track AS T
+    JOIN employee_track AS E ON E.track_id = T.track_id where E.employee_id = ? AND E.is_active=true;`;
+
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, uid, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    })
+  }
+  
+  async assignVehicle(data) {
+    const Data = {
+      vehicle_id: data.vehicle_id,
+      employee_id: data.employee_id,
+      created_at: new Date(),
+      is_active:true,
+    };
+   
+return new Promise((resolve, reject) => {
+      this.db.query('INSERT INTO employee_vehicle SET ?', Data, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  }
+  async getVehicleByEmployeeId(uid) {
+    const sql = `    SELECT V.full_name, V.reg_no, V.vehicle_id ,E.employee_vehicle_id FROM vehicle AS V
+    JOIN employee_vehicle AS E ON E.vehicle_id = V.vehicle_id where E.employee_id = ? AND E.is_active=true;`;
+
+    return new Promise((resolve, reject) => {
+      this.db.query(sql, uid, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    })
   }
 }
 
