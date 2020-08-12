@@ -17,8 +17,9 @@ module.exports = () => {
           res.send(_err);
         }
         if(user.employee_type === 'driver'){
+          // console.log(user);
         const token = jwt.sign({ id: user.email}, process.env.JWT_SECRET, { expiresIn: 380000 });
-        return res.status(201).json({ message: 'Login Successfully', id:user.employee_id,success: true, token });}
+        return res.status(201).json({ message: 'Login Successfully', id:user.employee_id, name:user.full_name,success: true, token });}
         else{
         return res.status(400).json({ message: 'Username or password is incorrect' });
 

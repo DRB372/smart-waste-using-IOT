@@ -34,6 +34,7 @@ class BinService {
   }
 
   async addNewBin(data) {
+    console.log(data);
     const binData = {
       bin_id: data.bin_id,
       bin_address: data.bin_address,
@@ -50,6 +51,7 @@ class BinService {
       this.db.query('INSERT INTO bins SET ?', binData, (err, result) => {
         if (!err) {
           resolve(result);
+      
         } else {
           reject(err);
         }
@@ -84,6 +86,25 @@ class BinService {
       });
     }).then(resp => resp);
   }
+
+  async addLevelBin(data) {
+
+    return new Promise((resolve, reject) => {
+      console.log(data.Distance);
+      const sql = 'UPDATE bins SET level =?  WHERE bin_id=1122';
+      this.db.query(sql, [data.Distance], (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    })
+      .then(resp => resp)
+      .catch(error => error);
+  }
+
+ 
 }
 
 module.exports = BinService;

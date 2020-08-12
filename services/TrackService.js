@@ -100,7 +100,7 @@ class TrackService {
     }
 
     async getBinsByTrackId(uid) {
-      const sql = `SELECT B.bin_id, B.bin_address, B.latitude ,B.longitude, T.track_bin_id FROM bins AS B
+      const sql = `SELECT B.bin_id, B.bin_address,B.level, B.latitude ,B.longitude, T.track_bin_id FROM bins AS B
       JOIN track_bin AS T ON B.bin_id= T.bin_id where T.track_id= ? AND T.is_active=true;`;
   
       return new Promise((resolve, reject) => {

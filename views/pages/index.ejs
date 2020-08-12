@@ -22,8 +22,6 @@
           <div class="count"><%- trackCount[0].Count %></div>
           <span class="count_bottom"><i class="green"> Active </i></span>
         </div>
-
-        
       </div>
     </div>
     <div class="x_panel">
@@ -33,7 +31,7 @@
           <li>
             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
           </li>
-          
+
           <li>
             <a class="close-link"><i class="fa fa-close"></i></a>
           </li>
@@ -50,13 +48,15 @@
 <script>
   function initMap() {
     var locations = [];
+    var level = [0, 17, 25, 41, 50];
+    var remarks = ['Empty', 'Satisfactory', 'Filling Up', 'Filled'];
     ('<% bins.forEach((bin, index) => { %>');
-    locations.push('<%- bin.latitude%>', '<%- bin.longitude%>');
+    locations.push('<%- bin.latitude%>', '<%- bin.longitude%>','<%- bin.level%>');
     ('<% }); %>');
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 12,
-     
+
       center: new google.maps.LatLng(locations[0], locations[1]),
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     });
@@ -64,14 +64,46 @@
     var markers, i;
     var x = 0;
     var y = 1;
-    for (i = 0; i < locations.length / 2; i++) {
-      markers = new google.maps.Marker({
+    var z = 2;
+    
+    for (i = 0; i < locations.length / 3; i++) {
+      // console.log('locations.length');
+      if(locations[z]<5){
+        markers = new google.maps.Marker({
         position: new google.maps.LatLng(locations[x], locations[y]),
         map: map,
-       
+        //  icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        //  icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        title: locations[z]+'-Filled',
       });
-      x = x + 2;
-      y = y + 2;
+      }
+      // if((location[z]>=15) && (location[z]<=20)  )
+      else if(locations[z]<15) {
+        markers = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[x], locations[y]),
+        map: map,
+        //  icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+        //  icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        title: locations[z]+' - Filling Up',
+        });
+      }
+      else {
+        markers = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[x], locations[y]),
+        map: map,
+        //  icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        //  icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        title: locations[z]+' - Filled',
+        });
+
+      }
+     
+      x = x + 3;
+      y = y + 3;
+      z = z + 3;
     }
   }
 </script>

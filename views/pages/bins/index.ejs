@@ -46,6 +46,7 @@
                     <th>Address</th>
                     <th>Latitude</th>
                     <th>Longitude</th>
+                    <th>Level</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -57,6 +58,8 @@
                     <td><%= bin.bin_address %></td>
                     <td><%= bin.latitude %></td>
                     <td><%= bin.longitude %></td>
+                    <td><%= bin.level %></td>
+                    
                     <td>
                       <a class="text-info" href="/bins/details/<%= bin.bin_id %>">View</a>
                       | <a href="/bins/edit/<%= bin.bin_id %>">Edit</a> |

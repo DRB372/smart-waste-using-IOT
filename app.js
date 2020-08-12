@@ -25,7 +25,9 @@ const BinService = require('./services/BinService');
 const TrackService = require('./services/TrackService');
 const AllocationService = require('./services/AllocationService')
 const AvatarService = require('./services/AvatarService');
+const ConsultationService = require('./services/ConsultationService');
 const IndexService = require('./services/IndexService');
+const ComplainService = require('./services/complainService');
 
 
 const employeeService = new EmployeeService(db);
@@ -35,6 +37,10 @@ const binService = new BinService(db);
 const trackService = new TrackService(db);
 const indexService = new IndexService(db);
 const allocationService = new AllocationService(db);
+const consultationService = new ConsultationService(db);
+const complainService = new ComplainService(db);
+
+
 const routes = require('./routes');
 
 const app = express();
@@ -75,6 +81,9 @@ app.use(
     avatars,
     trackService,
     allocationService,
+    consultationService,
+    complainService,
+
   })
 );
 

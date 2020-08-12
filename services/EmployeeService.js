@@ -43,7 +43,7 @@ class EmployeeService {
   }
 
   async getEmployeeByEmail(email) {
-    const sql = `SELECT E.employee_id, P.email, E.passwrd, E.employee_type
+    const sql = `SELECT E.employee_id, P.email,p.full_name, E.passwrd, E.employee_type
       FROM person AS P
         JOIN employee AS E
           ON E.person_id = P.person_id

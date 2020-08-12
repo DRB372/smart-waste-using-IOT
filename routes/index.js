@@ -5,6 +5,9 @@ const employeeRoute = require('./employee');
 const vehicleRoute = require('./vehicle');
 const trackRoute = require('./track');
 const binRoute = require('./bins');
+const consultRoute = require('./consultation')
+const complainRoute = require('./complain')
+
 const allocatinRoute = require('./allocation')
 const binApiRoute = require('./bins/api');
 const middlewares = require('./middlewares');
@@ -20,7 +23,6 @@ module.exports = params => {
       const binsCount = await indexService.getBinsCount();
       const employeeCount = await indexService.getEmployeeCount();
       const trackCount = await indexService.getTrackCount();
-   
       return res.render('layout', {
         title: 'Dashboard',
         template: 'index',
@@ -53,8 +55,10 @@ module.exports = params => {
   router.use('/track', trackRoute(params));
   router.use('/bins', binRoute(params));
   router.use('/allocation',  allocatinRoute(params));
+  router.use('/consultation',  consultRoute(params));
+  router.use('/api', binApiRoute(params));
+  router.use('/complain', complainRoute(params));
 
-  router.use('/api/bins', binApiRoute(params));
 
   return router;
 };

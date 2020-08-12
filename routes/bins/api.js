@@ -27,22 +27,62 @@ const validations = [
 
 module.exports = params => {
   const { binService } = params;
+  const { employeeService } = params;
+  const { trackService } = params;
 
-  router.get('/:binId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    try {
-      const result = await binService.getBinById(req.params.binId);
-      if (!result) {
-        return res.status(404).json({ message: 'Unable find the bin.' });
+  router.get(
+    '/tracks/:employeeId',
+    passport.authenticate('jwt', { session: false }),
+
+    async (req, res) => {
+      // console.log(hello);
+      try {
+        const result = await employeeService.getTracksByEmployeeId(req.params.employeeId);
+        if (!result) {
+          return res.status(404).json({ message: 'Unable find the tracks.' });
+        }
+        return res.json(result);
+      } catch (err) {
+        return res.status(500).json({ message: 'Something went wrong.' });
       }
-      return res.json(result);
-    } catch (err) {
-      return res.status(500).json({ message: 'Something went wrong.' });
     }
-  });
+  );
+
+  router.get(
+    '/bins/:trackId',
+    passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+      try {
+        const result = await trackService.getBinsByTrackId(req.params.trackId);
+        if (!result) {
+          return res.status(404).json({ message: 'Unable find the Bins.' });
+        }
+        return res.json({results:result});
+      } catch (err) {
+        return res.status(500).json({ message: 'Something went wrong.' });
+      }
+    }
+  );
+
+  router.get(
+    '/bin/:binId',
+     passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+      try {
+        const result = await binService.getBinById(req.params.binId);
+        if (!result) {
+          return res.status(404).json({ message: 'Unable find the Bins.' });
+        }
+        return res.json(result);
+      } catch (err) {
+        return res.status(500).json({ message: 'Something went wrong.' });
+      }
+    }
+  );
 
   router.post(
-    '/new',
-    passport.authenticate('jwt', { session: false }),
+    '/bins/new',
+     passport.authenticate('jwt', { session: false }),
     validations,
     async (req, res) => {
       const errors = validationResult(req);
@@ -59,5 +99,37 @@ module.exports = params => {
     }
   );
 
+  router.get(
+    '/bins',
+    // passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+      try {
+        const result = await binService.getBins();
+        if (!result) {
+          return res.status(404).json({ message: 'Unable find the Bins.' });
+        }
+        return res.json({results:result});
+      } catch (err) {
+        return res.status(500).json({ message: 'Something went wrong.' });
+      }
+    }
+  );
+  router.post(
+    '/binlevel/new',
+    //  passport.authenticate('jwt', { session: false }),
+    
+    async (req, res) => {
+            const formData = req.body;
+            // console.log(formData);
+      const result = await binService.addLevelBin(formData);
+      if (result.affectedRows !== 1) {
+        return res.status(400).json({ message: 'Unable to add new bin.' });
+      }
+      return res.status(201).json({ message: 'New bin added successfully.' });
+    }
+  );
+
+ 
+ 
   return router;
 };
